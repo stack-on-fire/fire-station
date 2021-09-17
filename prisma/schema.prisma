@@ -69,14 +69,15 @@ model VerificationRequest {
 // Business logic related schema
 
 model Project {
-  id          String     @id @default(cuid())
-  name        String
-  description String?
-  userId      String
-  createdAt   DateTime   @default(now()) @map(name: "created_at")
-  updatedAt   DateTime   @updatedAt @map(name: "updated_at")
-  isArchived  DateTime?
-  endpoints   Endpoint[]
+  id           String        @id @default(cuid())
+  name         String
+  description  String?
+  userId       String
+  createdAt    DateTime      @default(now()) @map(name: "created_at")
+  updatedAt    DateTime      @updatedAt @map(name: "updated_at")
+  isArchived   DateTime?
+  endpoints    Endpoint[]
+  accessTokens AccessToken[]
 
   User                 User?   @relation(fields: [userId_ProjectToUser], references: [id])
   userId_ProjectToUser Int?
@@ -97,6 +98,18 @@ model Endpoint {
 
 
   @@map(name: "endpoints")
+}
+
+model AccessToken {
+  id        String   @id @default(cuid())
+  projectId String
+  jwt       String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+
+  Project Project @relation(fields: [projectId], references: [id])
+
+
+  @@map(name: "accessTokens")
 }
 
 model Event {

@@ -1,45 +1,41 @@
 import React, { useState } from "react";
 import { Navbar } from "components";
-import { Project as ProjectType, Endpoint } from "@prisma/client";
+import { Project as ProjectType, Endpoint, AccessToken } from "@prisma/client";
 import {
   Box,
   HStack,
   Divider,
-  Button,
-  IconButton,
   Input,
   VStack,
-  Heading,
-  Text,
   Skeleton,
 } from "@chakra-ui/react";
 import { QueryClient } from "react-query";
-import { fetchProject, useProject, useProjectMutation } from "hooks";
+import { fetchProject, useProject } from "hooks";
 import { dehydrate } from "react-query/hydration";
 import { useRouter } from "next/dist/client/router";
-import { ArrowBackIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect } from "react";
 import Fuse from "fuse.js";
 
 import Breadcrumbs from "components/projects";
 import ProjectSection from "components/projects/project-section";
-import DetailsSection from "components/projects/details-section";
+import EndpointDetailsSection from "components/projects/endpoint-details-section";
+import ProjectDetailsSection from "components/projects/project-details-section";
 
 const Project = () => {
   const router = useRouter();
-  const projectMutation = useProjectMutation();
-
   const {
     data: project,
   }: {
-    data: ProjectType & { endpoints: ReadonlyArray<Endpoint> };
+    data: ProjectType & {
+      endpoints: ReadonlyArray<Endpoint>;
+      accessTokens: ReadonlyArray<AccessToken>;
+    };
   } = useProject({ id: router.query.id });
   const selectedEndpoint = project?.endpoints.find(
     (endpoint) => endpoint.id === router.query.endpoint
   );
 
   const [isEditingEndpoint, setEditingEndpoint] = useState(false);
-  const [isEditingProject, setEditingProject] = useState(false);
   const [name, setName] = useState("");
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
@@ -102,61 +98,14 @@ const Project = () => {
             </VStack>
           </HStack>
         )}
+
         <Divider my={4} />
         {router.query.settings === "true" ? (
-          <Box>
-            <HStack mb={4}>
-              <Button
-                onClick={() =>
-                  router.push(
-                    {
-                      pathname: router.pathname,
-                    },
-                    `${project.id}`,
-                    { shallow: true }
-                  )
-                }
-                size="md"
-                aria-label="Back arrow"
-                leftIcon={<ArrowBackIcon />}
-              >
-                Back
-              </Button>
-              <Heading size="md">Project settings</Heading>
-            </HStack>
-
-            <HStack mb={2}>
-              {isEditingProject ? (
-                <Input
-                  onChange={(e) => setProjectName(e.target.value)}
-                  value={projectName}
-                  size="sm"
-                />
-              ) : (
-                <Text fontSize="lg">{project?.name}</Text>
-              )}
-              {isEditingProject ? (
-                <Button
-                  onClick={() => {
-                    projectMutation.mutate({
-                      id: project.id,
-                      name: projectName,
-                    });
-                    setEditingProject(false);
-                  }}
-                >
-                  Save
-                </Button>
-              ) : (
-                <IconButton
-                  onClick={() => setEditingProject(!isEditingProject)}
-                  size="sm"
-                  aria-label="Edit"
-                  icon={<EditIcon />}
-                />
-              )}
-            </HStack>
-          </Box>
+          <ProjectDetailsSection
+            project={project}
+            projectName={projectName}
+            setProjectName={setProjectName}
+          />
         ) : (
           <Box>
             {!selectedEndpoint && (
@@ -168,7 +117,7 @@ const Project = () => {
                 />
               </Box>
             )}
-            <DetailsSection
+            <EndpointDetailsSection
               project={project}
               selectedEndpoint={selectedEndpoint}
               setName={setName}
@@ -180,7 +129,6 @@ const Project = () => {
               setDescription={setDescription}
               setSelectedEndpoint={setSelectedEndpoint}
             />
-            {DetailsSection}
           </Box>
         )}
       </Box>
