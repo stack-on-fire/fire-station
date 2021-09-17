@@ -1,0 +1,54 @@
+{
+  "name": "stackonfire",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev | pino-pretty --config pino.json",
+    "lint": "next lint",
+    "build": "next build",
+    "start": "next start",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "prisma:generate": "prisma generate",
+    "ts-node": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\""
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^1.0.13",
+    "@chakra-ui/react": "^1.6.2",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@prisma/client": "2.23.0",
+    "@svgr/webpack": "^5.5.0",
+    "axios": "^0.21.1",
+    "boring-avatars": "^1.5.8",
+    "date-fns": "^2.23.0",
+    "framer-motion": "^4",
+    "fuse.js": "^6.4.6",
+    "lodash": "^4.17.21",
+    "msw": "^0.35.0",
+    "next": "^11.1.0",
+    "next-auth": "^3.23.3",
+    "next-images": "^1.7.0",
+    "nextjs-progressbar": "^0.0.11",
+    "pino": "6.13.2",
+    "pino-pretty": "6.0.0",
+    "random-word-slugs": "^0.0.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-hot-toast": "^1.0.2",
+    "react-icons": "^4.2.0",
+    "react-query": "^3.19.2"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.1",
+    "@types/react": "^17.0.6",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.0",
+    "prisma": "2.23.0",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
+  },
+  "msw": {
+    "workerDirectory": "public"
+  }
+}
