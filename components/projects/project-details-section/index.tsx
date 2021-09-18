@@ -56,7 +56,9 @@ const DetailsSection = ({ project, projectName, setProjectName }) => {
             <Tab>Access tokens</Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>{project && <MainSection />}</TabPanel>
+            <TabPanel>
+              {project && <MainSection projectId={project.id} />}
+            </TabPanel>
             <TabPanel>
               <HStack mb={2}>
                 {isEditingProject ? (

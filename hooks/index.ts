@@ -5,3 +5,4 @@ export * from "./useProjectMutation";
 export * from "./useCreateAccessTokenMutation";
 export * from "./useDeleteAccessTokenMutation";
 export * from "./useCreateEventMutation";
+export * from "./useEventsByProject";
