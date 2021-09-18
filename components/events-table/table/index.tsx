@@ -167,6 +167,7 @@ const Styles = styled.div<Props>`
   table {
     width: 100%;
     border-spacing: 0;
+    font-size: 14px;
 
     tr {
       :last-child {

@@ -1,5 +1,6 @@
 import { Event } from ".prisma/client";
 import { Box } from "@chakra-ui/layout";
+import { Badge } from "@chakra-ui/react";
 import { format } from "date-fns";
 
 import React from "react";
@@ -22,6 +23,8 @@ const EventsTable = ({
       {
         Header: "Endpoint",
         accessor: "endpoint.name",
+        // eslint-disable-next-line react/display-name
+        Cell: ({ cell }) => <Badge colorScheme="orange">{cell.value}</Badge>,
       },
       {
         Header: "Fired on",
