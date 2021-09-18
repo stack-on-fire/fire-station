@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Project } from "@prisma/client";
+import { Project, Endpoint } from "@prisma/client";
 
 import { Box } from "@chakra-ui/layout";
 import { Navbar } from "components";
@@ -44,7 +44,7 @@ const Index = () => {
     data: projects,
     isLoading,
   }: {
-    data: ReadonlyArray<Project>;
+    data: ReadonlyArray<Project & { endpoints: ReadonlyArray<Endpoint> }>;
     isLoading: boolean;
   } = useProjects({ skip: !!session });
 
