@@ -8,13 +8,20 @@ import {
   useColorModeValue as mode,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { Project } from "@prisma/client";
+import { Project, Endpoint } from "@prisma/client";
 import BoringAvatar from "boring-avatars";
-import { HiArchive } from "react-icons/hi";
+import { CgEditBlackPoint } from "react-icons/cg";
 
-const ProjectCard = ({ project }: { project: Project }) => {
+const ProjectCard = ({
+  project,
+}: {
+  project: Project & { endpoints: ReadonlyArray<Endpoint> };
+}) => {
   return (
-    <Link as={`/projects/${project.id}`} href="/projects/[id]">
+    <Link
+      as={`/projects/${project.id}?settings=true`}
+      href="/projects/[id]?settings=true"
+    >
       <Flex
         direction="column"
         justifyContent="space-between"
@@ -51,10 +58,9 @@ const ProjectCard = ({ project }: { project: Project }) => {
             {project.description}
           </Text>
         </Box>
-        <HStack>
-          {project.isArchived && (
-            <Icon fontSize="xl" as={HiArchive} color="gray.500" />
-          )}
+        <HStack spacing={0}>
+          <Icon as={CgEditBlackPoint} w={8} h={8} color="red.400" />
+          <Box>{project.endpoints.length}</Box>
         </HStack>
       </Flex>
     </Link>

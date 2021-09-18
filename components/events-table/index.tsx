@@ -39,15 +39,13 @@ const EventsTable = ({
 
   return (
     <Box>
-      <Box>
-        <Table
-          data={data}
-          columns={columns}
-          setPage={setPage}
-          currentPage={currentPage}
-          totalPages={Math.ceil(totalCount / 10)}
-        />
-      </Box>
+      <Table
+        data={data}
+        columns={columns}
+        setPage={setPage}
+        currentPage={currentPage}
+        totalPages={Math.ceil(totalCount / 10)}
+      />
     </Box>
   );
 };

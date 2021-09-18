@@ -11,6 +11,9 @@ export default async function handle(req, res) {
     where: {
       userId: String(session?.user.id),
     },
+    include: {
+      endpoints: true,
+    },
   });
 
   res.json(projects);
