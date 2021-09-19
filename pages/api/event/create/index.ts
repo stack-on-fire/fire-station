@@ -1,8 +1,15 @@
-// import prisma from "lib/prisma";
 import jwt from "jsonwebtoken";
 import prisma from "lib/prisma";
-
+import Pusher from "pusher";
 export default async function handle(req, res) {
+  const pusher = new Pusher({
+    appId: "1269318",
+    key: "a2f021e5df573a6f52b4",
+    secret: process.env.PUSHER_SECRET,
+    cluster: "eu",
+    useTLS: true,
+  });
+
   const authHeader = req.headers.authorization;
   if (!authHeader.includes("Bearer")) {
     throw new Error("Not a valid authorization token");
@@ -38,6 +45,13 @@ export default async function handle(req, res) {
       projectId: foundEndpoint.projectId,
       metaData: { a: 1, b: 2 },
     },
+    include: {
+      endpoint: true,
+    },
+  });
+
+  pusher.trigger("fire-station-events", "create-event", {
+    event,
   });
 
   res.json(event);

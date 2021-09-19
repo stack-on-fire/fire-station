@@ -1,8 +1,8 @@
 import { Event } from ".prisma/client";
 import { Box } from "@chakra-ui/layout";
-import { Badge } from "@chakra-ui/react";
+import { Badge, Button } from "@chakra-ui/react";
 import { format } from "date-fns";
-import { useUpdateEventsMutation } from "hooks";
+import { useCreateEventMutation, useUpdateEventsMutation } from "hooks";
 
 import React, { useEffect } from "react";
 import Table from "./table";
@@ -56,9 +56,18 @@ const EventsTable = ({
     ],
     []
   );
+  const sendEventMutation = useCreateEventMutation();
 
   return (
     <Box>
+      <Button
+        my={2}
+        onClick={() =>
+          sendEventMutation.mutate({ endpoint: "new-user-registration" })
+        }
+      >
+        click me
+      </Button>
       <Table
         data={data}
         columns={columns}

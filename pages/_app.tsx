@@ -7,35 +7,43 @@ import { Hydrate } from "react-query/hydration";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "next-auth/client";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { PusherProvider } from "@harelpls/use-pusher";
 
 if (process.env.NODE_ENV === "development") {
   require("mocks");
 }
+
+const pusherConfig = {
+  clientKey: "a2f021e5df573a6f52b4",
+  cluster: "eu",
+};
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
 
   return (
     <ChakraProvider>
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <Provider session={pageProps.session}>
-            <Component {...pageProps} />
-            <NextNprogress
-              color="#FF8826"
-              startPosition={0.3}
-              stopDelayMs={200}
-              height={2}
-              showOnShallow={true}
-              options={{ showSpinner: false }}
-            />
-            <div>
-              <Toaster />
-            </div>
-          </Provider>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </Hydrate>
-      </QueryClientProvider>
+      <PusherProvider {...pusherConfig}>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <Provider session={pageProps.session}>
+              <Component {...pageProps} />
+              <NextNprogress
+                color="#FF8826"
+                startPosition={0.3}
+                stopDelayMs={200}
+                height={2}
+                showOnShallow={true}
+                options={{ showSpinner: false }}
+              />
+              <div>
+                <Toaster position="top-right" />
+              </div>
+            </Provider>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </Hydrate>
+        </QueryClientProvider>
+      </PusherProvider>
     </ChakraProvider>
   );
 }
