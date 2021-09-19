@@ -40,7 +40,7 @@ const Table = ({ setPage, columns, data, currentPage, totalPages }) => {
   );
 
   const { colorMode } = useColorMode();
-  const unreadhighlight = useColorModeValue("yellow.100", "yellow.900");
+  const unreadHighlight = useColorModeValue("yellow.100", "yellow.900");
 
   return (
     <Styles colorMode={colorMode}>
@@ -75,7 +75,7 @@ const Table = ({ setPage, columns, data, currentPage, totalPages }) => {
             return (
               <Box
                 as="tr"
-                background={!row.original.isRead && unreadhighlight}
+                background={!row.original.isRead && unreadHighlight}
                 transition="all 0.3s"
                 key={index}
                 {...row.getRowProps()}

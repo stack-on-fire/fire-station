@@ -44,7 +44,10 @@ const Index = () => {
     data: projects,
     isLoading,
   }: {
-    data: ReadonlyArray<Project & { endpoints: ReadonlyArray<Endpoint> }>;
+    data: {
+      projects: ReadonlyArray<Project & { endpoints: ReadonlyArray<Endpoint> }>;
+      unreadEventsCount: number;
+    };
     isLoading: boolean;
   } = useProjects({ skip: !!session });
 
@@ -95,8 +98,12 @@ const Index = () => {
           </SimpleGrid>
         ) : (
           <SimpleGrid p={4} columns={[1, 2, 3, 4]} spacing={4} gridGap={2}>
-            {projects?.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+            {projects?.projects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                unreadEventsCount={projects.unreadEventsCount}
+              />
             ))}
           </SimpleGrid>
         )}

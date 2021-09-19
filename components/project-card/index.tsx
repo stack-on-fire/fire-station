@@ -11,11 +11,14 @@ import Link from "next/link";
 import { Project, Endpoint } from "@prisma/client";
 import BoringAvatar from "boring-avatars";
 import { CgEditBlackPoint } from "react-icons/cg";
+import PulsingCircle from "components/pusling-circle";
 
 const ProjectCard = ({
   project,
+  unreadEventsCount,
 }: {
   project: Project & { endpoints: ReadonlyArray<Endpoint> };
+  unreadEventsCount: number;
 }) => {
   return (
     <Link
@@ -58,10 +61,18 @@ const ProjectCard = ({
             {project.description}
           </Text>
         </Box>
-        <HStack spacing={0}>
-          <Icon as={CgEditBlackPoint} w={8} h={8} color="red.400" />
-          <Box>{project.endpoints.length}</Box>
-        </HStack>
+        <Flex justifyContent="space-between" alignItems="centr">
+          <HStack spacing={0}>
+            <Icon as={CgEditBlackPoint} w={8} h={8} color="red.400" />
+            <Box>{project.endpoints.length}</Box>
+          </HStack>
+          {unreadEventsCount ? (
+            <HStack>
+              <PulsingCircle m={2} />
+              <Text fontWeight="400">{unreadEventsCount}</Text>
+            </HStack>
+          ) : null}
+        </Flex>
       </Flex>
     </Link>
   );
