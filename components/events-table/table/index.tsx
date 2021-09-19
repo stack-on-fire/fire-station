@@ -1,7 +1,11 @@
 import { Button } from "@chakra-ui/button";
-import { ColorMode, useColorMode } from "@chakra-ui/color-mode";
+import {
+  ColorMode,
+  useColorMode,
+  useColorModeValue,
+} from "@chakra-ui/color-mode";
 import { Input } from "@chakra-ui/input";
-import { HStack, Text } from "@chakra-ui/layout";
+import { Box, HStack, Text } from "@chakra-ui/layout";
 import theme from "@chakra-ui/theme";
 import styled from "@emotion/styled";
 import React from "react";
@@ -36,6 +40,7 @@ const Table = ({ setPage, columns, data, currentPage, totalPages }) => {
   );
 
   const { colorMode } = useColorMode();
+  const unreadhighlight = useColorModeValue("yellow.100", "yellow.900");
 
   return (
     <Styles colorMode={colorMode}>
@@ -68,7 +73,13 @@ const Table = ({ setPage, columns, data, currentPage, totalPages }) => {
           {page.map((row, index) => {
             prepareRow(row);
             return (
-              <tr key={index} {...row.getRowProps()}>
+              <Box
+                as="tr"
+                background={!row.original.isRead && unreadhighlight}
+                transition="all 0.3s"
+                key={index}
+                {...row.getRowProps()}
+              >
                 {row.cells.map((cell, index) => {
                   return (
                     <td
@@ -80,7 +91,7 @@ const Table = ({ setPage, columns, data, currentPage, totalPages }) => {
                     </td>
                   );
                 })}
-              </tr>
+              </Box>
             );
           })}
         </tbody>

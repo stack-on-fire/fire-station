@@ -2,8 +2,9 @@ import { Event } from ".prisma/client";
 import { Box } from "@chakra-ui/layout";
 import { Badge } from "@chakra-ui/react";
 import { format } from "date-fns";
+import { useUpdateEventsMutation } from "hooks";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Table from "./table";
 
 const EventsTable = ({
@@ -17,6 +18,22 @@ const EventsTable = ({
   setPage: (number) => void;
   totalCount: number;
 }) => {
+  const updateEventsMutation = useUpdateEventsMutation();
+
+  useEffect(() => {
+    const markEventsAsRead = () =>
+      updateEventsMutation.mutate({
+        ids: events.filter((event) => !event.isRead).map((event) => event.id),
+        markAsRead: true,
+      });
+
+    if (events.some((event) => !event.isRead)) {
+      setTimeout(() => {
+        markEventsAsRead();
+      }, 800);
+    }
+  }, [events]);
+
   const data = React.useMemo(() => events, [events]);
   const columns = React.useMemo(
     () => [
