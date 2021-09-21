@@ -5,6 +5,7 @@ import {
   Endpoint,
   AccessToken,
   Dashboard,
+  Widget,
 } from "@prisma/client";
 import {
   Box,
@@ -48,7 +49,8 @@ const Project = () => {
   }: {
     data: ProjectType & {
       endpoints: ReadonlyArray<Endpoint>;
-      dashboards: ReadonlyArray<Dashboard>;
+      dashboards: ReadonlyArray<Dashboard & { widgets: ReadonlyArray<Widget> }>;
+
       accessTokens: ReadonlyArray<AccessToken>;
     };
   } = useProject({ id: router.query.id });

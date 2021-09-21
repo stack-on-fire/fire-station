@@ -1,22 +1,42 @@
 import React from "react";
 
 import { ArrowBackIcon, SettingsIcon } from "@chakra-ui/icons";
-import { Flex, Heading, HStack, SimpleGrid, Text } from "@chakra-ui/layout";
-import { Tabs, Tab, TabPanel, TabPanels, TabList } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/layout";
+import {
+  Tabs,
+  Tab,
+  TabPanel,
+  TabPanels,
+  TabList,
+  Select,
+} from "@chakra-ui/react";
 import { Button, IconButton } from "@chakra-ui/button";
 import { useRouter } from "next/dist/client/router";
-import { Project, Dashboard } from "prisma/prisma-client";
+import { Project, Dashboard, Endpoint } from "prisma/prisma-client";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Tooltip } from "@chakra-ui/tooltip";
 import { truncate } from "lodash";
+import AddWidget from "./add-widget";
+import { Widget } from "@prisma/client";
+import WidgetComponent from "./widget/widget";
 
 const DashboardDetailsSection = ({
   project,
   selectedDashboard,
   setSelectedDashboard,
 }: {
-  project: Project & { dashboards: ReadonlyArray<Dashboard> };
-  selectedDashboard: Dashboard;
+  project: Project & {
+    endpoints: ReadonlyArray<Endpoint>;
+    dashboards: ReadonlyArray<Dashboard>;
+  };
+  selectedDashboard: Dashboard & { widgets: ReadonlyArray<Widget> };
   setSelectedDashboard: (Dashboard) => void;
 }) => {
   const router = useRouter();
@@ -54,8 +74,25 @@ const DashboardDetailsSection = ({
               <Tab>Settings</Tab>
             </TabList>
             <TabPanels>
-              <TabPanel></TabPanel>
-
+              <TabPanel>
+                <Box mb={4}>
+                  <AddWidget project={project} dashboard={selectedDashboard} />
+                </Box>
+                <Flex>
+                  <Select mb={4} ml="auto" w={200} justifySelf="flex-end">
+                    <option value="today">Today</option>
+                    <option value="today">3 days</option>
+                    <option value="today">1 week</option>
+                    <option value="today">1 month</option>
+                    <option value="today">1 year</option>
+                  </Select>
+                </Flex>
+                <SimpleGrid columns={[1, 2, 3, 4]} gridGap={2}>
+                  {selectedDashboard?.widgets?.map((widget) => (
+                    <WidgetComponent key={widget.id} widget={widget} />
+                  ))}
+                </SimpleGrid>
+              </TabPanel>
               <TabPanel></TabPanel>
             </TabPanels>
           </Tabs>
