@@ -8,6 +8,7 @@ export default async function handle(req, res) {
     include: {
       endpoints: true,
       accessTokens: true,
+      dashboards: true,
     },
   });
 

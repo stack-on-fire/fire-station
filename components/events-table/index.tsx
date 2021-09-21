@@ -85,7 +85,14 @@ const EventsTable = ({
         </Button>
         <Button
           my={2}
-          onClick={() => sendEventMutation.mutate({ endpoint: "email-signup" })}
+          onClick={() =>
+            sendEventMutation.mutate({
+              endpoint: "email-signup",
+              metaData: {
+                segment: "javascript",
+              },
+            })
+          }
         >
           subscribe to email
         </Button>

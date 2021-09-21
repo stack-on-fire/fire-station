@@ -1,16 +1,34 @@
 import React, { useState } from "react";
 import { Navbar } from "components";
-import { Project as ProjectType, Endpoint, AccessToken } from "@prisma/client";
+import {
+  Project as ProjectType,
+  Endpoint,
+  AccessToken,
+  Dashboard,
+} from "@prisma/client";
 import {
   Box,
   HStack,
   Divider,
   Input,
   VStack,
+  Text,
   Skeleton,
+  Tabs,
+  Tab,
+  TabPanel,
+  TabPanels,
+  TabList,
+  Button,
+  Badge,
 } from "@chakra-ui/react";
 import { QueryClient } from "react-query";
-import { fetchProject, useProject } from "hooks";
+import {
+  fetchProject,
+  useCreateDashboardMutation,
+  useCreateEndpointMutation,
+  useProject,
+} from "hooks";
 import { dehydrate } from "react-query/hydration";
 import { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
@@ -20,6 +38,8 @@ import Breadcrumbs from "components/projects";
 import ProjectSection from "components/projects/project-section";
 import EndpointDetailsSection from "components/projects/endpoint-details-section";
 import ProjectDetailsSection from "components/projects/project-details-section";
+import DashboardDetailsSection from "components/projects/dashboard-details-section";
+import { useAppUrl } from "hooks/useAppUrl";
 
 const Project = () => {
   const router = useRouter();
@@ -28,19 +48,51 @@ const Project = () => {
   }: {
     data: ProjectType & {
       endpoints: ReadonlyArray<Endpoint>;
+      dashboards: ReadonlyArray<Dashboard>;
       accessTokens: ReadonlyArray<AccessToken>;
     };
   } = useProject({ id: router.query.id });
+  const appUrl = useAppUrl();
+
   const selectedEndpoint = project?.endpoints.find(
     (endpoint) => endpoint.id === router.query.endpoint
   );
+  console.log(project);
+  const selectedDashboard = project?.dashboards.find(
+    (dashboard) => dashboard.id === router.query.dashboard
+  );
 
+  const setSelectedEndpoint = (endpoint: Endpoint) =>
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { endpoint: endpoint.id },
+      },
+      `${project.id}?endpoint=${endpoint.id}`,
+      { shallow: true }
+    );
+
+  const setSelectedDashboard = (dashboard: Dashboard) =>
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { dashboard: dashboard.id },
+      },
+      `${project.id}?dashboard=${dashboard.id}`,
+      { shallow: true }
+    );
+
+  const createEndpointMutation = useCreateEndpointMutation(setSelectedEndpoint);
+  const createDashboardMutation =
+    useCreateDashboardMutation(setSelectedDashboard);
+
+  const [searchString, setSearchString] = useState("");
   const [isEditingEndpoint, setEditingEndpoint] = useState(false);
   const [name, setName] = useState("");
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
+  const [dashboardName, setDashboardName] = useState("");
   const [color, setColor] = useState(null);
-  const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
     if (selectedEndpoint) {
@@ -61,16 +113,6 @@ const Project = () => {
     }
   }, [router.pathname, selectedEndpoint, project]);
 
-  const setSelectedEndpoint = (endpoint: Endpoint) =>
-    router.push(
-      {
-        pathname: router.pathname,
-        query: { endpoint: endpoint.id },
-      },
-      `${project.id}?endpoint=${endpoint.id}`,
-      { shallow: true }
-    );
-
   const options = {
     includeScore: true,
     keys: ["name"],
@@ -87,10 +129,7 @@ const Project = () => {
       <Box p={4} maxW={1200} mx="auto">
         <Breadcrumbs selectedEndpoint={selectedEndpoint} project={project} />
         {project ? (
-          <ProjectSection
-            project={project}
-            setSelectedEndpoint={setSelectedEndpoint}
-          />
+          <ProjectSection project={project} />
         ) : (
           <HStack alignItems="center">
             <Skeleton height={100} width={100} />
@@ -110,29 +149,81 @@ const Project = () => {
           />
         ) : (
           <Box>
-            {!selectedEndpoint && (
-              <Box mb={4}>
-                <Input
-                  value={searchString}
-                  onChange={(e) => setSearchString(e.target.value)}
-                  placeholder="Search endpoints"
-                />
-              </Box>
-            )}
-            <EndpointDetailsSection
-              project={project}
-              usedEndpoints={usedEndpoints}
-              selectedEndpoint={selectedEndpoint}
-              setSelectedEndpoint={setSelectedEndpoint}
-              isEditingEndpoint={isEditingEndpoint}
-              setEditingEndpoint={setEditingEndpoint}
-              name={name}
-              setName={setName}
-              description={description}
-              setDescription={setDescription}
-              color={color}
-              setColor={setColor}
-            />
+            <Tabs isLazy variant="enclosed">
+              <TabList mb="1em">
+                <Tab>Endpoints</Tab>
+                <Tab>Dashboards</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  {!selectedEndpoint && (
+                    <HStack mb={4}>
+                      <Button
+                        onClick={() => {
+                          createEndpointMutation.mutate({
+                            projectId: project.id,
+                          });
+                        }}
+                      >
+                        Add endpoint
+                      </Button>
+                      <Input
+                        value={searchString}
+                        onChange={(e) => setSearchString(e.target.value)}
+                        placeholder="Search endpoints"
+                      />
+                    </HStack>
+                  )}
+                  <EndpointDetailsSection
+                    project={project}
+                    usedEndpoints={usedEndpoints}
+                    selectedEndpoint={selectedEndpoint}
+                    setSelectedEndpoint={setSelectedEndpoint}
+                    isEditingEndpoint={isEditingEndpoint}
+                    setEditingEndpoint={setEditingEndpoint}
+                    name={name}
+                    setName={setName}
+                    description={description}
+                    setDescription={setDescription}
+                    color={color}
+                    setColor={setColor}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  {!selectedDashboard && (
+                    <Box>
+                      <Button
+                        mb={2}
+                        onClick={() => {
+                          createDashboardMutation.mutate({
+                            projectId: project.id,
+                            name: dashboardName,
+                          });
+                        }}
+                      >
+                        Add dashboard
+                      </Button>
+                      <HStack mb={4}>
+                        <HStack>
+                          <Badge>{appUrl}/dashboard</Badge>
+                          <Text>/</Text>
+                          <Input
+                            value={dashboardName}
+                            onChange={(e) => setDashboardName(e.target.value)}
+                            size="xs"
+                          />
+                        </HStack>
+                      </HStack>
+                    </Box>
+                  )}
+                  <DashboardDetailsSection
+                    selectedDashboard={selectedDashboard}
+                    setSelectedDashboard={setSelectedDashboard}
+                    project={project}
+                  />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </Box>
         )}
       </Box>

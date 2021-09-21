@@ -4,7 +4,6 @@ import {
   HStack,
   Heading,
   VStack,
-  Button,
   IconButton,
   Icon,
 } from "@chakra-ui/react";
@@ -14,35 +13,13 @@ import BoringAvatar from "boring-avatars";
 import { Project, Endpoint } from "@prisma/client";
 import { useRouter } from "next/dist/client/router";
 import { SettingsIcon } from "@chakra-ui/icons";
-import { useMutation, useQueryClient } from "react-query";
-import { useAppUrl } from "hooks/useAppUrl";
 
 const ProjectSection = ({
   project,
-  setSelectedEndpoint,
 }: {
   project: Project & { endpoints: ReadonlyArray<Endpoint> };
-  setSelectedEndpoint: (data: Endpoint | undefined) => void;
 }) => {
   const router = useRouter();
-  const appUrl = useAppUrl();
-  const queryClient = useQueryClient();
-
-  const createEndpointMutation = useMutation(
-    async () => {
-      const result = await fetch(
-        `${appUrl}/api/endpoint/create?projectId=${project.id}`
-      );
-      const json = await result.json();
-      return json;
-    },
-    {
-      onSuccess: async (data: Endpoint | undefined) => {
-        setSelectedEndpoint(data);
-        await queryClient.refetchQueries(["projects"]);
-      },
-    }
-  );
 
   return (
     <HStack spacing={3} alignItems="start">
@@ -63,13 +40,6 @@ const ProjectSection = ({
             <Box>{project.endpoints.length}</Box>
           </HStack>
           <HStack>
-            <Button
-              onClick={() => {
-                createEndpointMutation.mutate();
-              }}
-            >
-              Add endpoint
-            </Button>
             <IconButton
               onClick={() =>
                 router.push(

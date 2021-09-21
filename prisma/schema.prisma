@@ -78,10 +78,12 @@ model Project {
   isArchived   DateTime?
   endpoints    Endpoint[]
   accessTokens AccessToken[]
+  dashboards   Dashboard[]
 
-  User                 User?   @relation(fields: [userId_ProjectToUser], references: [id])
+  User                 User?    @relation(fields: [userId_ProjectToUser], references: [id])
   userId_ProjectToUser Int?
   Event                Event[]
+  Widget               Widget[]
   @@map(name: "projects")
 }
 
@@ -98,19 +100,20 @@ model Endpoint {
   Project Project @relation(fields: [projectId], references: [id])
 
 
+  Widget Widget[]
   @@map(name: "endpoints")
 }
 
-model AccessToken {
-  id        String   @id @default(cuid())
-  projectId String
-  jwt       String
-  createdAt DateTime @default(now()) @map(name: "created_at")
+model Dashboard {
+  id          String   @id @default(cuid())
+  projectId   String
+  name        String
+  description String?
+  createdAt   DateTime @default(now()) @map(name: "created_at")
 
   Project Project @relation(fields: [projectId], references: [id])
 
-
-  @@map(name: "accessTokens")
+  @@map(name: "dashboards")
 }
 
 model Event {
@@ -128,4 +131,29 @@ model Event {
 
 
   @@map(name: "events")
+}
+
+model Widget {
+  id         String   @id @default(cuid())
+  endpointId String
+  projectId  String?
+  createdAt  DateTime @default(now()) @map(name: "created_at")
+
+  endpoint Endpoint @relation(fields: [endpointId], references: [id])
+  Project  Project? @relation(fields: [projectId], references: [id])
+
+
+  @@map(name: "widgets")
+}
+
+model AccessToken {
+  id        String   @id @default(cuid())
+  projectId String
+  jwt       String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+
+  Project Project @relation(fields: [projectId], references: [id])
+
+
+  @@map(name: "accessTokens")
 }
