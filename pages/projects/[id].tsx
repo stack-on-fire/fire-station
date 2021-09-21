@@ -39,12 +39,14 @@ const Project = () => {
   const [name, setName] = useState("");
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
+  const [color, setColor] = useState(null);
   const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
     if (selectedEndpoint) {
       setName(selectedEndpoint.name);
       setDescription(selectedEndpoint.description);
+      setColor(selectedEndpoint.color);
     }
   }, [project, selectedEndpoint]);
 
@@ -119,15 +121,17 @@ const Project = () => {
             )}
             <EndpointDetailsSection
               project={project}
+              usedEndpoints={usedEndpoints}
               selectedEndpoint={selectedEndpoint}
-              setName={setName}
+              setSelectedEndpoint={setSelectedEndpoint}
               isEditingEndpoint={isEditingEndpoint}
               setEditingEndpoint={setEditingEndpoint}
-              usedEndpoints={usedEndpoints}
               name={name}
+              setName={setName}
               description={description}
               setDescription={setDescription}
-              setSelectedEndpoint={setSelectedEndpoint}
+              color={color}
+              setColor={setColor}
             />
           </Box>
         )}

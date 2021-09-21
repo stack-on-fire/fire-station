@@ -31,20 +31,22 @@ import { useEndpointMutation } from "hooks";
 import { useRouter } from "next/dist/client/router";
 import { ArrowBackIcon, EditIcon, SettingsIcon } from "@chakra-ui/icons";
 import { truncate } from "lodash";
-
+import { CirclePicker } from "react-color";
 import { HiArchive } from "react-icons/hi";
 
 const DetailsSection = ({
   selectedEndpoint,
   project,
-  setName,
   isEditingEndpoint,
   setEditingEndpoint,
   setSelectedEndpoint,
   usedEndpoints,
   name,
+  setName,
   description,
   setDescription,
+  color,
+  setColor,
 }) => {
   const router = useRouter();
 
@@ -98,47 +100,105 @@ const DetailsSection = ({
                 <TabPanel>
                   <HStack mb={2}>
                     {isEditingEndpoint ? (
-                      <Input
-                        onChange={(e) => setName(e.target.value)}
-                        value={name}
-                        size="sm"
-                      />
+                      <Box>
+                        <HStack mb={2}>
+                          <Heading size="sm">Set endpoint name</Heading>
+                          <Button
+                            size="sm"
+                            onClick={() => {
+                              endpointMutation.mutate({
+                                id: selectedEndpoint.id,
+                                name,
+                              });
+                              setEditingEndpoint(false);
+                            }}
+                          >
+                            Save
+                          </Button>
+                        </HStack>
+                        <Input
+                          onChange={(e) => setName(e.target.value)}
+                          value={name}
+                          size="sm"
+                        />
+                      </Box>
                     ) : (
-                      <Heading fontSize="xl">{selectedEndpoint.name}</Heading>
-                    )}
-                    {isEditingEndpoint ? (
-                      <Button
-                        onClick={() => {
-                          endpointMutation.mutate({
-                            id: selectedEndpoint.id,
-                            name,
-                            description,
-                          });
-                          setEditingEndpoint(false);
-                        }}
-                      >
-                        Save
-                      </Button>
-                    ) : (
-                      <IconButton
-                        onClick={() => setEditingEndpoint(!isEditingEndpoint)}
-                        size="sm"
-                        aria-label="Edit"
-                        icon={<EditIcon />}
-                      />
+                      <HStack alignItems="center">
+                        {color ? (
+                          <Box
+                            width={4}
+                            height={4}
+                            borderRadius={8}
+                            css={{
+                              backgroundColor: color
+                                ? `rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},0.6)`
+                                : "",
+                            }}
+                          />
+                        ) : null}
+                        <Heading fontSize="xl">{selectedEndpoint.name}</Heading>
+                        <IconButton
+                          onClick={() => setEditingEndpoint(!isEditingEndpoint)}
+                          size="sm"
+                          aria-label="Edit"
+                          icon={<EditIcon />}
+                        />
+                      </HStack>
                     )}
                   </HStack>
+                  <Box mb={4}>
+                    {isEditingEndpoint ? (
+                      <Box>
+                        <HStack mb={2}>
+                          <Heading size="sm">Set description</Heading>
+                          <Button
+                            size="sm"
+                            onClick={() => {
+                              endpointMutation.mutate({
+                                id: selectedEndpoint.id,
+                                description,
+                              });
+                              setEditingEndpoint(false);
+                            }}
+                          >
+                            Save
+                          </Button>
+                        </HStack>
+                        <Textarea
+                          onChange={(e) => setDescription(e.target.value)}
+                          size="sm"
+                          value={description}
+                        />
+                      </Box>
+                    ) : (
+                      <Text mb={4} minW={350}>
+                        {selectedEndpoint.description}
+                      </Text>
+                    )}
+                  </Box>
                   {isEditingEndpoint ? (
-                    <Textarea
-                      onChange={(e) => setDescription(e.target.value)}
-                      size="sm"
-                      value={description}
-                    />
-                  ) : (
-                    <Text mb={4} minW={350}>
-                      {selectedEndpoint.description}
-                    </Text>
-                  )}
+                    <Box mb={4}>
+                      <HStack mb={2}>
+                        <Heading size="sm">Set color </Heading>
+                        <Button
+                          size="sm"
+                          onClick={() => {
+                            endpointMutation.mutate({
+                              id: selectedEndpoint.id,
+                              color,
+                            });
+                            setEditingEndpoint(false);
+                          }}
+                        >
+                          Save
+                        </Button>
+                      </HStack>
+                      <CirclePicker
+                        color={color ? color.hex : "#fff"}
+                        onChange={(color) => setColor(color)}
+                      />
+                    </Box>
+                  ) : null}
                   <Divider mb={4} />
                 </TabPanel>
 
@@ -151,6 +211,7 @@ const DetailsSection = ({
                       onChange={() =>
                         endpointMutation.mutate({
                           id: selectedEndpoint.id,
+                          color,
                         })
                       }
                       isChecked={selectedEndpoint.isArchived}

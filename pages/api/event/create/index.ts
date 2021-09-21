@@ -28,6 +28,7 @@ export default async function handle(req, res) {
   }
 
   const { endpoint } = req.query;
+  const { metaData } = req.body;
 
   const foundEndpoint = await prisma.endpoint.findFirst({
     where: {
@@ -43,7 +44,7 @@ export default async function handle(req, res) {
     data: {
       endpointId: foundEndpoint.id,
       projectId: foundEndpoint.projectId,
-      metaData: { a: 1, b: 2 },
+      metaData,
     },
     include: {
       endpoint: true,

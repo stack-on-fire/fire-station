@@ -5,6 +5,9 @@ import { Endpoint } from ".prisma/client";
 
 type Variables = {
   endpoint: Endpoint["name"];
+  metaData?: {
+    [key: string]: unknown;
+  };
 };
 
 const useCreateEventMutation = () => {
@@ -14,7 +17,7 @@ const useCreateEventMutation = () => {
     async (variables: Variables) => {
       const response = await axios.post(
         `${appUrl}/api/event/create?endpoint=${variables.endpoint}`,
-        {},
+        { metaData: variables.metaData },
         {
           headers: {
             Authorization:

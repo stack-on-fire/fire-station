@@ -90,6 +90,7 @@ model Endpoint {
   projectId    String
   name         String
   isRegistered DateTime?
+  color        Json?
   description  String?
   createdAt    DateTime  @default(now()) @map(name: "created_at")
   events       Event[]
@@ -120,7 +121,7 @@ model Event {
   isRead       DateTime?
   description  String?
   createdAt    DateTime  @default(now()) @map(name: "created_at")
-  metaData     Json
+  metaData     Json?
 
   endpoint Endpoint @relation(fields: [endpointId], references: [id])
   Project  Project? @relation(fields: [projectId], references: [id])

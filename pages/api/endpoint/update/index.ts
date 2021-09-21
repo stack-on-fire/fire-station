@@ -2,7 +2,7 @@ import prisma from "lib/prisma";
 
 export default async function handle(req, res) {
   const { id } = req.query;
-  const { name, description } = req.body;
+  const { name, description, color } = req.body;
 
   const endpoint = await prisma.endpoint.update({
     where: {
@@ -11,6 +11,7 @@ export default async function handle(req, res) {
     data: {
       name,
       description,
+      color,
     },
   });
 

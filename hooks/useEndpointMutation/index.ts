@@ -7,6 +7,7 @@ type Variables = {
   id: Endpoint["id"];
   name?: string;
   description?: string;
+  color?: string;
 };
 
 const useEndpointMutation = () => {
@@ -19,6 +20,7 @@ const useEndpointMutation = () => {
         {
           name: variables.name,
           description: variables.description,
+          color: variables.color,
         }
       );
       return response.data;

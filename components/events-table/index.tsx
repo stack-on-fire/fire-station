@@ -1,5 +1,5 @@
 import { Event } from ".prisma/client";
-import { Box } from "@chakra-ui/layout";
+import { Box, HStack } from "@chakra-ui/layout";
 import { Badge, Button } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useCreateEventMutation, useUpdateEventsMutation } from "hooks";
@@ -41,7 +41,21 @@ const EventsTable = ({
         Header: "Endpoint",
         accessor: "endpoint.name",
         // eslint-disable-next-line react/display-name
-        Cell: ({ cell }) => <Badge colorScheme="orange">{cell.value}</Badge>,
+        Cell: ({ cell }) => {
+          const color = cell.row.original?.endpoint?.color;
+
+          return (
+            <Badge
+              css={{
+                backgroundColor: color
+                  ? `rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},0.4)`
+                  : "",
+              }}
+            >
+              {cell.value}
+            </Badge>
+          );
+        },
       },
       {
         Header: "Fired on",
@@ -60,14 +74,34 @@ const EventsTable = ({
 
   return (
     <Box>
-      <Button
-        my={2}
-        onClick={() =>
-          sendEventMutation.mutate({ endpoint: "new-user-registration" })
-        }
-      >
-        click me
-      </Button>
+      <HStack>
+        <Button
+          my={2}
+          onClick={() =>
+            sendEventMutation.mutate({ endpoint: "new-user-registration" })
+          }
+        >
+          register user
+        </Button>
+        <Button
+          my={2}
+          onClick={() => sendEventMutation.mutate({ endpoint: "email-signup" })}
+        >
+          subscribe to email
+        </Button>
+        <Button
+          my={2}
+          onClick={() =>
+            sendEventMutation.mutate({
+              endpoint: "payment",
+              metaData: { c: 1, y: 42 },
+            })
+          }
+        >
+          pay for service
+        </Button>
+      </HStack>
+
       <Table
         data={data}
         columns={columns}
