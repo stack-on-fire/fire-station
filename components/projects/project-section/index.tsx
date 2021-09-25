@@ -1,26 +1,15 @@
 import React from "react";
-import {
-  Box,
-  HStack,
-  Heading,
-  VStack,
-  IconButton,
-  Icon,
-} from "@chakra-ui/react";
+import { Box, HStack, Heading, VStack, Icon } from "@chakra-ui/react";
 
 import { CgEditBlackPoint } from "react-icons/cg";
 import BoringAvatar from "boring-avatars";
 import { Project, Endpoint } from "@prisma/client";
-import { useRouter } from "next/dist/client/router";
-import { SettingsIcon } from "@chakra-ui/icons";
 
 const ProjectSection = ({
   project,
 }: {
   project: Project & { endpoints: ReadonlyArray<Endpoint> };
 }) => {
-  const router = useRouter();
-
   return (
     <HStack spacing={3} alignItems="start">
       <BoringAvatar
@@ -38,22 +27,6 @@ const ProjectSection = ({
           <HStack spacing={0}>
             <Icon as={CgEditBlackPoint} w={8} h={8} color="red.400" />
             <Box>{project.endpoints.length}</Box>
-          </HStack>
-          <HStack>
-            <IconButton
-              onClick={() =>
-                router.push(
-                  {
-                    pathname: router.pathname,
-                    query: { settings: true },
-                  },
-                  `${project.id}?settings=true`,
-                  { shallow: true }
-                )
-              }
-              aria-label="Settings"
-              icon={<SettingsIcon />}
-            />
           </HStack>
         </HStack>
       </VStack>
