@@ -4,7 +4,7 @@ export * from "./useEndpointMutation";
 export * from "./useProjectMutation";
 export * from "./useCreateAccessTokenMutation";
 export * from "./useDeleteAccessTokenMutation";
-export * from "./useCreateEndpointMutation/useCreateEventMutation";
+export * from "./useCreateEventMutation";
 export * from "./useCreateEndpointMutation";
 export * from "./useCreateDashboardMutation";
 export * from "./useEventsByProject";

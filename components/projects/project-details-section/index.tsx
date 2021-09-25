@@ -29,7 +29,7 @@ const DetailsSection = ({ project, projectName, setProjectName }) => {
       <Box>
         <Tabs>
           <TabList>
-            <Tab>Main</Tab>
+            <Tab>Events</Tab>
             <Tab>Details</Tab>
             <Tab>Access tokens</Tab>
           </TabList>

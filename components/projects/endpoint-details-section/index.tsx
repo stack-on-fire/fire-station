@@ -94,7 +94,7 @@ const DetailsSection = ({
             </HStack>
             <Tabs>
               <TabList mb="1em">
-                <Tab>Main</Tab>
+                <Tab>Events</Tab>
                 <Tab>Details</Tab>
                 <Tab>Settings</Tab>
               </TabList>
