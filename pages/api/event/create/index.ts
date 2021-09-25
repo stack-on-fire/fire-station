@@ -4,9 +4,9 @@ import Pusher from "pusher";
 export default async function handle(req, res) {
   const pusher = new Pusher({
     appId: process.env.PUSHER_APP_ID,
-    key: process.env.PUSHER_CLIENT_KEY,
+    key: process.env.NEXT_PUBLIC_PUSHER_CLIENT_KEY,
     secret: process.env.PUSHER_SECRET,
-    cluster: process.env.PUSHER_CLUSTER,
+    cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
     useTLS: true,
   });
 
