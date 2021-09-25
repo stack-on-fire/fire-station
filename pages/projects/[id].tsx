@@ -59,7 +59,7 @@ const Project = () => {
   const selectedEndpoint = project?.endpoints.find(
     (endpoint) => endpoint.id === router.query.endpoint
   );
-  console.log(project);
+
   const selectedDashboard = project?.dashboards.find(
     (dashboard) => dashboard.id === router.query.dashboard
   );

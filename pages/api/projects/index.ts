@@ -25,7 +25,5 @@ export default async function handle(req, res) {
     },
   });
 
-  console.log(unreadEventsCount);
-
   res.json({ projects, unreadEventsCount });
 }

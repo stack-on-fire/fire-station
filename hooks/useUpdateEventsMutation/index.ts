@@ -21,7 +21,6 @@ const useUpdateEventsMutation = () => {
     },
     {
       onSuccess: async () => {
-        console.log("success");
         await queryClient.refetchQueries(["eventsByProject"]);
       },
     }

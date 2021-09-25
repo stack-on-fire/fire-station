@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { ArrowBackIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
@@ -26,6 +26,7 @@ import { truncate } from "lodash";
 import AddWidget from "./add-widget";
 import { Widget } from "@prisma/client";
 import WidgetComponent from "./widget/widget";
+import { Date } from "hooks/useWidget";
 
 const DashboardDetailsSection = ({
   project,
@@ -40,6 +41,7 @@ const DashboardDetailsSection = ({
   setSelectedDashboard: (Dashboard) => void;
 }) => {
   const router = useRouter();
+  const [date, setDate] = useState<Date["range"]>("TODAY");
 
   const borderColor = useColorModeValue("gray.200", "gray.700");
   const textColor = useColorModeValue("gray.600", "gray.300");
@@ -79,17 +81,28 @@ const DashboardDetailsSection = ({
                   <AddWidget project={project} dashboard={selectedDashboard} />
                 </Box>
                 <Flex>
-                  <Select mb={4} ml="auto" w={200} justifySelf="flex-end">
-                    <option value="today">Today</option>
-                    <option value="today">3 days</option>
-                    <option value="today">1 week</option>
-                    <option value="today">1 month</option>
-                    <option value="today">1 year</option>
+                  <Select
+                    value={date}
+                    onChange={(e) => setDate(e.target.value as Date["range"])}
+                    mb={4}
+                    ml="auto"
+                    w={200}
+                    justifySelf="flex-end"
+                  >
+                    <option value="TODAY">Today</option>
+                    <option value="THREE_DAYS">3 days</option>
+                    <option value="ONE_WEEK">1 week</option>
+                    <option value="ONE_MONTH">1 month</option>
+                    <option value="ONE_YEAR">1 year</option>
                   </Select>
                 </Flex>
                 <SimpleGrid columns={[1, 2, 3, 4]} gridGap={2}>
                   {selectedDashboard?.widgets?.map((widget) => (
-                    <WidgetComponent key={widget.id} widget={widget} />
+                    <WidgetComponent
+                      date={date}
+                      key={widget.id}
+                      widget={widget}
+                    />
                   ))}
                 </SimpleGrid>
               </TabPanel>

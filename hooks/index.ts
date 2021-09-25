@@ -10,3 +10,4 @@ export * from "./useCreateDashboardMutation";
 export * from "./useEventsByProject";
 export * from "./useUpdateEventsMutation";
 export * from "./useCreateWidgetMutation";
+export * from "./useDeleteWidgetMutation";
