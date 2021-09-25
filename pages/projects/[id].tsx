@@ -41,6 +41,7 @@ import EndpointDetailsSection from "components/projects/endpoint-details-section
 import ProjectDetailsSection from "components/projects/project-details-section";
 import DashboardDetailsSection from "components/projects/dashboard-details-section";
 import { useAppUrl } from "hooks/useAppUrl";
+import { Feature } from "react-fire-flags";
 
 const Project = () => {
   const router = useRouter();
@@ -149,7 +150,9 @@ const Project = () => {
               <TabList mb="1em">
                 <Tab>Project</Tab>
                 <Tab>Endpoints</Tab>
-                <Tab>Dashboards</Tab>
+                <Feature name="dashboards">
+                  <Tab>Dashboards</Tab>
+                </Feature>
               </TabList>
               <TabPanels>
                 <TabPanel>
