@@ -20,6 +20,15 @@ export default async function handle(req, res) {
   if (!token) {
     throw new Error("No JWT has been provided");
   }
+  const foundToken = await prisma.accessToken.findFirst({
+    where: {
+      jwt: token,
+    },
+  });
+
+  if (!foundToken) {
+    throw new Error("No such token exists for this endpoint");
+  }
 
   const decodedJwt = jwt.verify(token, process.env.JWT_SECRET);
 
