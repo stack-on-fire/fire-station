@@ -54,7 +54,7 @@ const DetailsSection = ({
 }) => {
   const router = useRouter();
   const { endpoint } = router.query;
-  const { hasCopied, onCopy } = useClipboard(endpoint);
+  const { hasCopied, onCopy } = useClipboard(endpoint as string);
 
   const endpointMutation = useEndpointMutation();
   const borderColor = useColorModeValue("gray.200", "gray.700");
