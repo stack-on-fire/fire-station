@@ -24,6 +24,9 @@ import {
   Icon,
   Flex,
   SimpleGrid,
+  VStack,
+  Code,
+  useClipboard,
 } from "@chakra-ui/react";
 
 import { useEndpointMutation } from "hooks";
@@ -50,6 +53,8 @@ const DetailsSection = ({
   setColor,
 }) => {
   const router = useRouter();
+  const { endpoint } = router.query;
+  const { hasCopied, onCopy } = useClipboard(endpoint);
 
   const endpointMutation = useEndpointMutation();
   const borderColor = useColorModeValue("gray.200", "gray.700");
@@ -100,6 +105,15 @@ const DetailsSection = ({
               </TabList>
               <TabPanels>
                 <TabPanel>
+                  <VStack mb={4} align="start">
+                    <HStack>
+                      <Heading size="md">Endpoint id</Heading>
+                      <Button onClick={onCopy} size="xs">
+                        {hasCopied ? "Copied" : "Copy"}
+                      </Button>
+                    </HStack>
+                    <Code>{endpoint}</Code>
+                  </VStack>
                   <EndpointMainSection />
                 </TabPanel>
                 <TabPanel>

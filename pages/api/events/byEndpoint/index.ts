@@ -9,8 +9,6 @@ export default async function handle(req, res) {
 
   const { endpointId, projectId, skip, take } = req.query;
 
-  console.log(projectId);
-
   const projectsByUser = await prisma.project.findMany({
     where: {
       userId: String(session.user.id),
