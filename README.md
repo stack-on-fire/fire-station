@@ -45,3 +45,19 @@ https://station.stackonfire.dev
 ```
 <img width="1159" alt="Screenshot 2021-09-25 at 21 02 01" src="https://user-images.githubusercontent.com/29632358/134783295-95415c76-890d-424d-8b88-7989e73b547c.png">
 
+
+## Get started with self-hosted version
+
+Fire station is dead simple to self host! You need to have an instance of Postgres database running, as long as you have the connection string you can safely deploy to Vercel. Environments variables necessary to run the app are listed in `.env.example`
+
+Fire-station currently offers three methods of authentication - magic link, github and twitter. The auth setup is powered by Next-auth and to make it work you need to provide correct environment variables to the project.
+
+To enable live notifications you will need to setup Pusher with their api and respective env vars.
+
+
+## Contribute
+
+- Clone the repo
+- run `docker-compose up -d` in the terminal to boot up the database
+- development environment uses MSW to mock session, so you don't need to set up next-auth related env variables to be able to log in. If you need to mimic login workflow - disable service workers in `_app.tsx` 
+- run `yarn run dev` 
