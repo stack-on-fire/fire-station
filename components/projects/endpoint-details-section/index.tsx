@@ -33,6 +33,7 @@ import { ArrowBackIcon, EditIcon, SettingsIcon } from "@chakra-ui/icons";
 import { truncate } from "lodash";
 import { CirclePicker } from "react-color";
 import { HiArchive } from "react-icons/hi";
+import EndpointMainSection from "./endpoint-main-section";
 
 const DetailsSection = ({
   selectedEndpoint,
@@ -94,9 +95,13 @@ const DetailsSection = ({
             <Tabs>
               <TabList mb="1em">
                 <Tab>Main</Tab>
+                <Tab>Details</Tab>
                 <Tab>Settings</Tab>
               </TabList>
               <TabPanels>
+                <TabPanel>
+                  <EndpointMainSection />
+                </TabPanel>
                 <TabPanel>
                   <HStack mb={2}>
                     {isEditingEndpoint ? (
