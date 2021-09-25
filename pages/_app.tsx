@@ -8,7 +8,6 @@ import { Toaster } from "react-hot-toast";
 import { Provider } from "next-auth/client";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { PusherProvider } from "@harelpls/use-pusher";
-import { FireFlags } from "react-fire-flags";
 
 if (process.env.NODE_ENV === "development") {
   require("mocks");
@@ -24,29 +23,29 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ChakraProvider>
-      <FireFlags projectId="cktk2o9bg00370vl7ldwp8m3k">
-        <PusherProvider {...pusherConfig}>
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
-              <Provider session={pageProps.session}>
-                <Component {...pageProps} />
-                <NextNprogress
-                  color="#FF8826"
-                  startPosition={0.3}
-                  stopDelayMs={200}
-                  height={2}
-                  showOnShallow={true}
-                  options={{ showSpinner: false }}
-                />
-                <div>
-                  <Toaster position="top-right" />
-                </div>
-              </Provider>
-              <ReactQueryDevtools initialIsOpen={false} />
-            </Hydrate>
-          </QueryClientProvider>
-        </PusherProvider>
-      </FireFlags>
+      {/* <FireFlags projectId="cktk2o9bg00370vl7ldwp8m3k"> */}
+      <PusherProvider {...pusherConfig}>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <Provider session={pageProps.session}>
+              <Component {...pageProps} />
+              <NextNprogress
+                color="#FF8826"
+                startPosition={0.3}
+                stopDelayMs={200}
+                height={2}
+                showOnShallow={true}
+                options={{ showSpinner: false }}
+              />
+              <div>
+                <Toaster position="top-right" />
+              </div>
+            </Provider>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </Hydrate>
+        </QueryClientProvider>
+      </PusherProvider>
+      {/* </FireFlags> */}
     </ChakraProvider>
   );
 }
