@@ -20,10 +20,10 @@ import {
   Tab,
   TabPanel,
   TabPanels,
+  TabList,
   Icon,
   Flex,
   SimpleGrid,
-  TabList,
 } from "@chakra-ui/react";
 
 import { useEndpointMutation } from "hooks";
@@ -91,7 +91,7 @@ const DetailsSection = ({
                 </Tooltip>
               )}
             </HStack>
-            <Tabs variant="enclosed">
+            <Tabs>
               <TabList mb="1em">
                 <Tab>Main</Tab>
                 <Tab>Settings</Tab>

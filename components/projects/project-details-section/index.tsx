@@ -5,7 +5,6 @@ import {
   Button,
   IconButton,
   Input,
-  Heading,
   Text,
   Tabs,
   Tab,
@@ -16,13 +15,11 @@ import {
 
 import { useProjectMutation } from "hooks";
 
-import { useRouter } from "next/dist/client/router";
-import { ArrowBackIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import AccessTokens from "./access-tokens";
 import MainSection from "../main-section";
 
 const DetailsSection = ({ project, projectName, setProjectName }) => {
-  const router = useRouter();
   const [isEditingProject, setEditingProject] = useState(false);
 
   const projectMutation = useProjectMutation();
@@ -30,27 +27,8 @@ const DetailsSection = ({ project, projectName, setProjectName }) => {
   return (
     <>
       <Box>
-        <HStack mb={4}>
-          <Button
-            onClick={() =>
-              router.push(
-                {
-                  pathname: router.pathname,
-                },
-                `${project.id}`,
-                { shallow: true }
-              )
-            }
-            size="md"
-            aria-label="Back arrow"
-            leftIcon={<ArrowBackIcon />}
-          >
-            Back
-          </Button>
-          <Heading size="md">Project settings</Heading>
-        </HStack>
-        <Tabs variant="enclosed">
-          <TabList mb="1em">
+        <Tabs>
+          <TabList>
             <Tab>Main</Tab>
             <Tab>Details</Tab>
             <Tab>Access tokens</Tab>

@@ -143,20 +143,22 @@ const Project = () => {
         )}
 
         <Divider my={4} />
-        {router.query.settings === "true" ? (
-          <ProjectDetailsSection
-            project={project}
-            projectName={projectName}
-            setProjectName={setProjectName}
-          />
-        ) : (
+        {
           <Box>
             <Tabs isLazy variant="enclosed">
               <TabList mb="1em">
+                <Tab>Project</Tab>
                 <Tab>Endpoints</Tab>
                 <Tab>Dashboards</Tab>
               </TabList>
               <TabPanels>
+                <TabPanel>
+                  <ProjectDetailsSection
+                    project={project}
+                    projectName={projectName}
+                    setProjectName={setProjectName}
+                  />
+                </TabPanel>
                 <TabPanel>
                   {!selectedEndpoint && (
                     <HStack mb={4}>
@@ -227,7 +229,7 @@ const Project = () => {
               </TabPanels>
             </Tabs>
           </Box>
-        )}
+        }
       </Box>
     </>
   );

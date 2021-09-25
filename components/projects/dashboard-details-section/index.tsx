@@ -70,7 +70,7 @@ const DashboardDetailsSection = ({
             </Button>
             <Heading fontSize="xl">{selectedDashboard.name}</Heading>
           </HStack>
-          <Tabs variant="enclosed">
+          <Tabs>
             <TabList mb="1em">
               <Tab>Main</Tab>
               <Tab>Settings</Tab>
