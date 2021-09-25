@@ -9,8 +9,8 @@ const EndpointMainSection = () => {
   const { endpoint: endpointId, id: projectId } = router.query;
 
   const { data: events, isLoading } = useEventsByEndpoint({
-    endpointId,
-    projectId,
+    endpointId: endpointId as string,
+    projectId: projectId as string,
     take: 10,
     skip: page === 1 ? 0 : (page - 1) * 10,
   });
