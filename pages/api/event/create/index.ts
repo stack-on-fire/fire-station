@@ -3,10 +3,10 @@ import prisma from "lib/prisma";
 import Pusher from "pusher";
 export default async function handle(req, res) {
   const pusher = new Pusher({
-    appId: "1269318",
-    key: "a2f021e5df573a6f52b4",
+    appId: process.env.PUSHER_APP_ID,
+    key: process.env.PUSHER_CLIENT_KEY,
     secret: process.env.PUSHER_SECRET,
-    cluster: "eu",
+    cluster: process.env.PUSHER_CLUSTER,
     useTLS: true,
   });
 

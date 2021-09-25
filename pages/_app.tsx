@@ -15,8 +15,8 @@ if (process.env.NODE_ENV === "development") {
 }
 
 const pusherConfig = {
-  clientKey: "a2f021e5df573a6f52b4",
-  cluster: "eu",
+  clientKey: process.env.PUSHER_CLIENT_KEY,
+  cluster: process.env.PUSHER_CLUSTER,
 };
 
 function MyApp({ Component, pageProps }: AppProps) {
