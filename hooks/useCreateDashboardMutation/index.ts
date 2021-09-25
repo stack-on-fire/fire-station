@@ -26,7 +26,7 @@ const useCreateDashboardMutation = (setSelectedDashboard) => {
         await queryClient.refetchQueries(["projects"]);
       },
       onError: async (error: Error) => {
-        console.log(error.name);
+        console.log(error.message);
       },
     }
   );

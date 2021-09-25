@@ -1,6 +1,6 @@
 import { Event } from ".prisma/client";
-import { Box } from "@chakra-ui/layout";
-import { Badge } from "@chakra-ui/react";
+import { Box, Heading, ListItem, OrderedList, VStack } from "@chakra-ui/layout";
+import { Badge, useColorModeValue } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useUpdateEventsMutation } from "hooks";
 
@@ -19,6 +19,7 @@ const EventsTable = ({
   totalCount: number;
 }) => {
   const updateEventsMutation = useUpdateEventsMutation();
+  const opacity = useColorModeValue("0.35", "0.75");
 
   useEffect(() => {
     const markEventsAsRead = () =>
@@ -50,7 +51,7 @@ const EventsTable = ({
             <Badge
               css={{
                 backgroundColor: color
-                  ? `rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},0.4)`
+                  ? `rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${opacity})`
                   : "",
               }}
             >
@@ -70,18 +71,29 @@ const EventsTable = ({
         Cell: ({ cell }) => JSON.stringify(cell.value),
       },
     ],
-    []
+    [opacity]
   );
 
   return (
     <Box>
-      <Table
-        data={data}
-        columns={columns}
-        setPage={setPage}
-        currentPage={currentPage}
-        totalPages={Math.ceil(totalCount / 10)}
-      />
+      {data.length > 0 ? (
+        <Table
+          data={data}
+          columns={columns}
+          setPage={setPage}
+          currentPage={currentPage}
+          totalPages={Math.ceil(totalCount / 10)}
+        />
+      ) : (
+        <VStack align="start">
+          <Heading size="xl">No events to display</Heading>
+          <OrderedList>
+            <ListItem>Create new endpoint</ListItem>
+            <ListItem>Call the endpoint API</ListItem>
+            <ListItem>See events popping up in the table</ListItem>
+          </OrderedList>
+        </VStack>
+      )}
     </Box>
   );
 };
