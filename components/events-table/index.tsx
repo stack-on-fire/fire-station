@@ -23,11 +23,13 @@ const EventsTable = ({
   useEffect(() => {
     const markEventsAsRead = () =>
       updateEventsMutation.mutate({
-        ids: events.filter((event) => !event.isRead).map((event) => event.id),
+        ids: events
+          .filter((event: Event) => !event.isRead)
+          .map((event) => event.id),
         markAsRead: true,
       });
 
-    if (events.some((event) => !event.isRead)) {
+    if (events.some((event: Event) => !event.isRead)) {
       setTimeout(() => {
         markEventsAsRead();
       }, 800);
